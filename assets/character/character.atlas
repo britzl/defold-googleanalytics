@@ -1,0 +1,87 @@
+images {
+  image: "/assets/character/images/eye_indifferent.png"
+}
+images {
+  image: "/assets/character/images/eye_surprised.png"
+}
+images {
+  image: "/assets/character/images/eyes.png"
+}
+images {
+  image: "/assets/character/images/front_bracer.png"
+}
+images {
+  image: "/assets/character/images/front_fist_closed.png"
+}
+images {
+  image: "/assets/character/images/front_fist_open.png"
+}
+images {
+  image: "/assets/character/images/front_foot.png"
+}
+images {
+  image: "/assets/character/images/front_foot_bend1.png"
+}
+images {
+  image: "/assets/character/images/front_foot_bend2.png"
+}
+images {
+  image: "/assets/character/images/front_shin.png"
+}
+images {
+  image: "/assets/character/images/front_thigh.png"
+}
+images {
+  image: "/assets/character/images/front_upper_arm.png"
+}
+images {
+  image: "/assets/character/images/goggles.png"
+}
+images {
+  image: "/assets/character/images/gun.png"
+}
+images {
+  image: "/assets/character/images/head.png"
+}
+images {
+  image: "/assets/character/images/mouth_grind.png"
+}
+images {
+  image: "/assets/character/images/mouth_oooo.png"
+}
+images {
+  image: "/assets/character/images/mouth_smile.png"
+}
+images {
+  image: "/assets/character/images/muzzle.png"
+}
+images {
+  image: "/assets/character/images/neck.png"
+}
+images {
+  image: "/assets/character/images/rear_bracer.png"
+}
+images {
+  image: "/assets/character/images/rear_foot.png"
+}
+images {
+  image: "/assets/character/images/rear_foot_bend1.png"
+}
+images {
+  image: "/assets/character/images/rear_foot_bend2.png"
+}
+images {
+  image: "/assets/character/images/rear_shin.png"
+}
+images {
+  image: "/assets/character/images/rear_thigh.png"
+}
+images {
+  image: "/assets/character/images/rear_upper_arm.png"
+}
+images {
+  image: "/assets/character/images/torso.png"
+}
+margin: 0
+extrude_borders: 2
+inner_padding: 0
