@@ -26,6 +26,14 @@ local QUEUE_FILENAME = "__ga_queue"
 
 local q = {}
 
+local queue_data = file.load(QUEUE_FILENAME)
+if queue_data then
+	local decoded_queue, err = pcall(json.decode, json)
+	if not err then
+		q = decoded_queue
+	end
+end
+
 
 local function sort()
 	table.sort(q, function(a, b)
@@ -33,15 +41,6 @@ local function sort()
 	end)
 end
 
-function M.init()
-	local queue_data = file.load(QUEUE_FILENAME)
-	if queue_data then
-		local decoded_queue, err = pcall(json.decode, json)
-		if not err then
-			q = decoded_queue
-		end
-	end
-end
 
 --- Add tracking parameters to queue
 -- @param params
@@ -88,7 +87,7 @@ function M.dispatch()
 		if #payload > 0 then
 			local post_data = table.concat(payload, "\n")
 			-- check limits of post_data (max 16K bytes, max 8K per payload)
-			http.request("http://www.google-analytics.com/batch", "POST", function(self, id, response)
+			http.request("https://www.google-analytics.com/batch", "POST", function(self, id, response)
 				if response.status < 200 or response.status >= 300 then
 					print("ERR: Problem when sending hits to Google Analytics. Code: ", response.status)
 					for i=1,#hits_in_flight do

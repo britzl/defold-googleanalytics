@@ -1,10 +1,32 @@
+--- Main module for the Google Analytics implementation for the Defold game
+-- engine.
+--
+-- @usage
+-- local ga = require "googleanalytics.ga"
+-- 
+-- function init(self)
+-- 	ga.get_default_tracker().screenview("my_cool_screen")
+-- end
+-- 
+-- function update(self, dt)
+-- 	ga.update()
+-- end
+-- 
+-- function on_input(self, action_id, action)
+-- 	if gui.pick_node(node, action.x, action.y) and action.pressed then
+-- 		go.get_default_tracker().event("category", "action"))
+-- 	end
+-- end
+
+
 local tracker = require "googleanalytics.tracker"
 local queue = require "googleanalytics.internal.queue"
 
-local M = {}
+local M = {
+	dispatch_period = tonumber(sys.get_config("googleanalytics.dispatch_period", 30 * 60)),
+}
 
 local default_tracker = nil
-
 
 --- Get the default tracker
 -- @return Tracker instance
@@ -27,11 +49,11 @@ end
 -- time to dispatch stored hits.
 function M.update()
 	-- manual dispatch only?
-	if dispatch_period <= 0 then
+	if M.dispatch_period <= 0 then
 		return
 	end
 	
-	if not queue.last_dispatch_time or (socket.gettime() >= (queue.last_dispatch_time + dispatch_period)) then 
+	if not queue.last_dispatch_time or (socket.gettime() >= (queue.last_dispatch_time + M.dispatch_period)) then 
 		M.dispatch()
 	end
 end

@@ -22,14 +22,6 @@ local function url_decode(str)
 	return str
 end
 
-local function limit(s, max)
-	if #s <= max then
-		return s
-	else
-		return s:sub(1, max)
-	end
-end
-
 
 local function get_uuid()
 	local uuid, err = file.load(UUID_FILENAME)
@@ -70,11 +62,11 @@ function M.create(tracking_id)
 	local tracking_params = "v=1&ds=app"
 		.. "&cid=" .. get_uuid()
 		.. "&tid=" .. tracking_id
-		.. "&vp=" .. limit(sys.get_config("display.width") .. "x" .. sys.get_config("display.height"), 20)
-		.. "&ul=" .. limit(sys.get_sys_info().device_language, 20)
-		.. "&an=" .. limit(get_application_name(), 100)
-		.. "&aid=" .. limit(get_application_id(), 150)
-		.. "&av=" .. limit(get_application_version(), 10)
+		.. "&vp=" .. sys.get_config("display.width") .. "x" .. sys.get_config("display.height")
+		.. "&ul=" .. sys.get_sys_info().device_language
+		.. "&an=" .. url_encode(get_application_name())
+		.. "&aid=" .. url_encode(get_application_id())
+		.. "&av=" .. get_application_version()
 
 	local event_params = tracking_params .. "&t=event"
 	local timing_params = tracking_params .. "&t=timing"
@@ -90,11 +82,11 @@ function M.create(tracking_id)
 	function tracker.enable_crash_reporting(enabled)
 		if enabled then
 			sys.set_error_handler(function(source, message, traceback)
-				queue.add(exception_params .. "&exf=0%exd=" .. limit(message, 150))
+				tracker.exception(message, false)
 			end)
 			local handle = crash.load_previous()
 			if handle then
-				queue.add(exception_params .. "&exf=1%exd=" .. limit(crash.get_extra_data(handle), 150))
+				tracker.exception(crash.get_extra_data(handle), true)
 				crash.release(handle)
 			end
 		else
@@ -109,6 +101,15 @@ function M.create(tracking_id)
 		queue.add(params)
 	end
 	
+	--- Exception tracking
+	-- @param description Specifies the description of an exception. Optional.
+	-- @param is_fatal Specifies whether the exception was fatal. Optional.
+	function tracker.exception(description, is_fatal)
+		assert(description and type(description) == "string", "You must provide a description (of type string)")
+		assert(is_fatal and type(is_fatal) == "boolean", "You must provide is_fatal (of type boolean)")
+		queue.add(exception_params .. "&exf=" .. (is_fatal and "1" or "0") .. "%exd=" .. url_encode(description))
+	end
+	
 	--- Event tracking
 	-- @param category Specifies the event category. Must not be empty.
 	-- @param action Specifies the event action. Must not be empty.
@@ -119,14 +120,14 @@ function M.create(tracking_id)
 		assert(action and type(action) == "string" and #action > 0, "You must provide an action (of type string, must not be empty)")
 		assert(not label or type(label) == "string", "Label must be nil or of type string")
 		assert(not value or (type(value) == "number" and value >= 0), "Value must be nil or a positive number")
-		queue.add(event_params .. "&ec=" .. limit(category, 150) .. "&ea=" .. limit(action, 500) .. (label and ("&el=" .. limit(label, 500)) or "") .. (value and ("&ev=" .. tostring(value)) or ""))
+		queue.add(event_params .. "&ec=" .. url_encode(category) .. "&ea=" .. url_encode(action) .. (label and ("&el=" .. url_encode(label)) or "") .. (value and ("&ev=" .. tostring(value)) or ""))
 	end
 	
 	--- Screenview
 	-- @param screen_name Specified the screen name of a screenview hit
 	function tracker.screenview(screen_name)
 		assert(screen_name and type(screen_name) == "string", "You must specify a screen name (of type string)")
-		queue.add(screenview_params .. "&cd=" .. limit(screen_name, 2048))
+		queue.add(screenview_params .. "&cd=" .. url_encode(screen_name))
 	end
 	
 	--- User timing
@@ -139,7 +140,7 @@ function M.create(tracking_id)
 		assert(variable and type(variable) == "string", "You must provide a variable (of type string)")
 		assert(time and type(time) == "number" and time >= 0, "You must provide a time (as a positive number)")
 		assert(not label or type(label) == "string", "Label must be nil or a string")
-		queue.add(timing_params .. "&utc=" .. limit(category, 150) .. "&utv=" .. limit(variable, 500) .. "&utt=" .. tostring(time) .. (label and ("&utl=" .. limit(label, 500)) or ""))
+		queue.add(timing_params .. "&utc=" .. url_encode(category) .. "&utv=" .. url_encode(variable) .. "&utt=" .. tostring(time) .. (label and ("&utl=" .. url_encode(label)) or ""))
 	end
 	
 	return tracker
