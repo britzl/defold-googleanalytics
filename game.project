@@ -1,6 +1,6 @@
 [project]
 title = Google Analytics
-version = 0.1
+version = 0.9
 dependencies = https://github.com/andsve/dirtylarry/archive/master.zip, https://github.com/britzl/deftest/archive/master.zip
 
 [bootstrap]
