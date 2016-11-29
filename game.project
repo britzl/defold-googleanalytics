@@ -1,7 +1,7 @@
 [project]
 title = Google Analytics
 version = 0.1
-dependencies = https://github.com/andsve/dirtylarry/archive/master.zip
+dependencies = https://github.com/andsve/dirtylarry/archive/master.zip, https://github.com/britzl/deftest/archive/master.zip
 
 [bootstrap]
 main_collection = /tests/tests.collectionc
@@ -26,4 +26,5 @@ include_dirs = googleanalytics
 tracking_id = UA-87977671-1
 dispatch_period = 10
 queue_save_period = 5
+verbose = 1
 

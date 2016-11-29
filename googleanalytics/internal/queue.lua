@@ -42,6 +42,20 @@ local function sort()
 end
 
 
+function M.log(...)
+	-- no-op
+end
+
+if sys.get_config("googleanalytics.verbose") == "1" then
+	M.log = function(s, ...)
+		if select("#", ...) > 0 then
+			print(s:format(...))
+		else
+			print(s)
+		end
+	end
+end
+
 --- Add tracking parameters to queue
 -- @param params
 function M.add(params)
@@ -55,7 +69,7 @@ function M.add(params)
 			assert(file.save(QUEUE_FILENAME, json_encode.encode(q)))
 		end)
 		if not ok then
-			print("ERR: Something went wrong while saving Google Analytics data", err)
+			M.log("ERR: Something went wrong while saving Google Analytics data", err)
 			M.dispatch()
 			q = {}
 			return
@@ -66,6 +80,13 @@ end
 
 --- Dispatch all stored hits to Google Analytics
 function M.dispatch()
+	M.last_dispatch_time = socket.gettime()
+	if #q == 0 then
+		M.log("Nothing to send")
+		return
+	end
+	
+	local hits_to_retry = {}
 	while #q > 0 do
 		
 		local hits_in_flight = {}
@@ -86,19 +107,26 @@ function M.dispatch()
 		
 		if #payload > 0 then
 			local post_data = table.concat(payload, "\n")
+			M.log("Sending %d hit(s) to Google Analytics", #hits_in_flight)
 			-- check limits of post_data (max 16K bytes, max 8K per payload)
 			http.request("https://www.google-analytics.com/batch", "POST", function(self, id, response)
 				if response.status < 200 or response.status >= 300 then
-					print("ERR: Problem when sending hits to Google Analytics. Code: ", response.status)
+					M.log("ERR: Problem when sending hits to Google Analytics. Code: ", response.status)
 					for i=1,#hits_in_flight do
-						q[#q + 1] = hits_in_flight[i]
+						hits_to_retry[#hits_to_retry + 1] = hits_in_flight[i]
 					end
-					sort()
 				end
 			end, nil, post_data)
 		end
 	end
-	M.last_dispatch_time = socket.gettime()
+
+	-- re-add any hits that we failed to send due to http errors
+	if #hits_to_retry > 0 then
+		for i=1,#hits_to_retry do
+			q[#q + 1] = hits_to_retry[i]
+		end
+		sort()
+	end
 end
 
 

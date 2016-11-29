@@ -1,8 +1,16 @@
+local test_tracker = require "tests.test_tracker"
 local test_queue = require "tests.test_queue"
+local test_file = require "tests.test_file"
+local test_uuid = require "tests.test_uuid"
+local test_ga = require "tests.test_ga"
 
 local deftest = require "deftest.deftest"
 
 function init(self)
+	deftest.add(test_tracker)
 	deftest.add(test_queue)
+	deftest.add(test_file)
+	deftest.add(test_uuid)
+	deftest.add(test_ga)
 	deftest.run()
 end

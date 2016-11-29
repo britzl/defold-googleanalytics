@@ -47,31 +47,27 @@ local function get_application_id()
 	return APPLICATION_IDS[system_name] or (get_application_name() .. system_name)
 end
 
-local function get_application_version()
-	return sys.get_config("project.version")
-end
-
 
 --- Create a tracker instance
 -- @param tracking_id Tracking id from the Google Analytics admin dashboard
 -- @return Tracker instance
 function M.create(tracking_id)
-	local tracker = {}
-	
-	-- https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
-	local tracking_params = "v=1&ds=app"
+	local tracker = {
+		-- https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
+		base_params = "v=1&ds=app"
 		.. "&cid=" .. get_uuid()
 		.. "&tid=" .. tracking_id
 		.. "&vp=" .. sys.get_config("display.width") .. "x" .. sys.get_config("display.height")
 		.. "&ul=" .. sys.get_sys_info().device_language
 		.. "&an=" .. url_encode(get_application_name())
 		.. "&aid=" .. url_encode(get_application_id())
-		.. "&av=" .. get_application_version()
-
-	local event_params = tracking_params .. "&t=event"
-	local timing_params = tracking_params .. "&t=timing"
-	local screenview_params = tracking_params .. "&t=screenview"
-	local exception_params = tracking_params .. "&t=exception"
+		.. "&av=" .. sys.get_config("project.version"),
+	}
+	
+	local event_params = tracker.base_params .. "&t=event"
+	local timing_params = tracker.base_params .. "&t=timing"
+	local screenview_params = tracker.base_params .. "&t=screenview"
+	local exception_params = tracker.base_params .. "&t=exception"
 	
 	--- Enable or disable crash reporting
 	-- If enabled the tracker will automatically get Lua soft crashes using
@@ -105,9 +101,9 @@ function M.create(tracking_id)
 	-- @param description Specifies the description of an exception. Optional.
 	-- @param is_fatal Specifies whether the exception was fatal. Optional.
 	function tracker.exception(description, is_fatal)
-		assert(description and type(description) == "string", "You must provide a description (of type string)")
-		assert(is_fatal and type(is_fatal) == "boolean", "You must provide is_fatal (of type boolean)")
-		queue.add(exception_params .. "&exf=" .. (is_fatal and "1" or "0") .. "%exd=" .. url_encode(description))
+		assert(not description or type(description) == "string", "Description must be nil or of type string")
+		assert(is_fatal == nil or type(is_fatal) == "boolean", "Is_fatal must be nil or of type boolean")
+		queue.add(exception_params .. (is_fatal ~= nil and ("&exf=" .. (is_fatal and "1" or "0")) or "") .. (description and ("&exd=" .. url_encode(description)) or ""))
 	end
 	
 	--- Event tracking
