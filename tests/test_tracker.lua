@@ -141,6 +141,9 @@ return function()
 		end)
 		
 		it("should be able to enable automatic crash reporting", function()
+			if not crash then
+				return
+			end
 			local t = tracker.create("UA-87977671-1")
 			crash.write_dump()
 			t.enable_crash_reporting(true)
