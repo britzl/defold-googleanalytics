@@ -43,10 +43,30 @@ Once you have added your tracking ID to game.project you're all set to start sen
 	end
 
 	function on_input(self, action_id, action)
-		if gui.pick_node(node, action.x, action.y) and action.pressed then
-			go.get_default_tracker().event("category", "action"))
+		if gui.pick_node(node1, action.x, action.y) and action.pressed then
+			go.get_default_tracker().event("category", "action")
+		end
+
+		if gui.pick_node(node2, action.x, action.y) and action.pressed then
+			local time = socket.gettime()
+			http.request("http://d.defold.com/stable/info.json", "GET", function(self, id, response)
+				local millis = math.floor((socket.gettime() - time) * 1000)
+				go.get_default_tracker().timing("http", "get", millis)
+			end)
 		end
 	end
+	
+## Supported hit types
+This implementation supports the following hit types:
+
+* Event - `ga.get_default_tracker().event()`
+* Screen View - `ga.default_tracker().screenview()`
+* Timing - `ga.default_tracker().timing()`
+* Exception - `ga.default_tracker().exception()`, also see section on automatic crash/exception tracking
+
+You can also register a raw hit where you specify all parameters yourself:
+
+	ga.get_default_tracker().raw("v=1&tid=UA-123456-1&cid=5555&t=pageview&dp=%2Fpage")
 
 ### Automatic crash/exception tracking
 You can let Google Analytics automatically send tracking data when your app crashes. The library can handle soft crashes (ie when your Lua code crashes) using [sys.set_error_handler](http://www.defold.com/ref/sys/#sys.set_error_handler:error_handler) and hard crashes (ie when the Defold engine crashes) using [crash API](http://www.defold.com/ref/crash/). Enable automatic crash tracking like this:
@@ -56,18 +76,6 @@ You can let Google Analytics automatically send tracking data when your app cras
 	function init(self)
 		ga.get_default_tracker().enable_crash_reporting(true)
 	end
-
-## Supported hit types
-This implementation supports the following hit types:
-
-* Event - ga.get_default_tracker().event()
-* Screen View - ga.default_tracker().screenview()
-* Timing - ga.default_tracker().timing()
-* Exception - ga.default_tracker().exception(), also see section on automatic crash/exception tracking
-
-You can also register a raw hit where you specify all parameters yourself:
-
-	ga.get_default_tracker().raw("v=1&tid=UA-123456-1&cid=5555&t=pageview&dp=%2Fpage")
 
 ## License
 This library is released under the same [Terms and Conditions as the Defold editor and service itself](http://www.defold.com/about-terms/).
