@@ -142,7 +142,7 @@ function M.create(tracking_id)
 		assert(not label or type(label) == "string", "Label must be nil or a string")
 		queue.add(timing_params .. "&utc=" .. url_encode(category) .. "&utv=" .. url_encode(variable) .. "&utt=" .. tostring(time) .. (label and ("&utl=" .. url_encode(label)) or ""))
 	end
-	
+
 	return tracker
 end
 

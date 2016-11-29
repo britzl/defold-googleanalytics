@@ -1,7 +1,7 @@
 local M = {}
 
 
-local function get_save_file_name(name)
+function M.get_save_file_name(name)
 	local application_name = sys.get_config("project.title"):gsub(" ", "_")
 	return sys.get_save_file(application_name, name)
 end
@@ -13,7 +13,7 @@ end
 -- @return error_message Error message if file could not be read
 function M.load(name)
 	assert(name, "You must provide a file name")
-	local filename = get_save_file_name(name)
+	local filename = M.get_save_file_name(name)
 	local file, err = io.open(filename, "r")
 	if not file then
 		return nil, err
@@ -45,7 +45,7 @@ function M.save(name, data)
 	file:write(data)
 	file:close()
 
-	local filename = get_save_file_name(name)
+	local filename = M.get_save_file_name(name)
 	os.remove(filename)
 	return os.rename(tmpname, filename)
 end

@@ -4,7 +4,7 @@ version = 0.1
 dependencies = https://github.com/andsve/dirtylarry/archive/master.zip
 
 [bootstrap]
-main_collection = /example/example.collectionc
+main_collection = /tests/tests.collectionc
 
 [input]
 game_binding = /input/game.input_bindingc
@@ -26,3 +26,4 @@ include_dirs = googleanalytics
 tracking_id = UA-87977671-1
 dispatch_period = 10
 queue_save_period = 5
+

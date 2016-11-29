@@ -18,8 +18,8 @@ local M = {
 
 
 -- payload rules, https://developers.google.com/analytics/devguides/collection/protocol/v1/devguide
-local MAX_HITS_PER_PAYLOAD = 20						-- A maximum of 20 hits can be specified per request.
-local MAX_HIT_SIZE = 8 * 1024							-- No single hit payload can be greater than 8K bytes.
+local MAX_HITS_PER_PAYLOAD = 20				-- A maximum of 20 hits can be specified per request.
+local MAX_HIT_SIZE = 8 * 1024				-- No single hit payload can be greater than 8K bytes.
 local MAX_TOTAL_PAYLOAD_SIZE = 16 * 1024	-- The total size of all hit payloads cannot be greater than 16K bytes.
 
 local QUEUE_FILENAME = "__ga_queue"
@@ -50,7 +50,7 @@ function M.add(params)
 		table.insert(q, { time = socket.gettime(), params = params })
 	end
 	
-	if not M.last_save_time or (socket.gettime() >= (M.last_save_time + M.minimum_save_period)) then
+	if #q > 0 and (not M.last_save_time or (socket.gettime() >= (M.last_save_time + M.minimum_save_period))) then
 		local ok, err = pcall(function()
 			assert(file.save(QUEUE_FILENAME, json_encode.encode(q)))
 		end)
