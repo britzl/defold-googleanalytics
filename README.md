@@ -21,10 +21,13 @@ Additional optional values are:
 	[googleanalytics]
 	dispatch_period = 1800
 	queue_save_period = 60
+	verbose = 1
 
 `dispatch_period` is the interval, in seconds, at which tracking data is sent to the server.
 
 `queue_save_period` is the minimum interval, in seconds, at which tracking data is saved to disk.
+
+`verbose` set to 1 will print some additional data about when and how many hits are sent to Google Analytics. Set to 0 or omit the value to not print anything.
 
 ## Usage
 Once you have added your tracking ID to game.project you're all set to start sending tracking data:
@@ -69,5 +72,14 @@ You can also register a raw hit where you specify all parameters yourself:
 ## License
 This library is released under the same [Terms and Conditions as the Defold editor and service itself](http://www.defold.com/about-terms/).
 
-## Credits
-The example project uses the [Dirty Larry UI library](https://github.com/andsve/dirtylarry) and the [Spineboy animation from the Spine animation tool](https://github.com/EsotericSoftware/spine-superspineboy).
+## Third party tools and modules used
+The library uses the following modules:
+
+* [json.lua by rxi](https://github.com/rxi/json.lua) (MIT License)
+* [uuid.lua by Tieske](https://github.com/Tieske/uuid) (Apache 2.0)
+* [url_encode() from Lua String Recipes](http://lua-users.org/wiki/StringRecipes)
+
+The example project uses:
+
+* [Dirty Larry UI library](https://github.com/andsve/dirtylarry)
+* [Spineboy animation from the Spine animation tool](https://github.com/EsotericSoftware/spine-superspineboy).
