@@ -24,7 +24,7 @@ include_dirs = googleanalytics
 
 [googleanalytics]
 tracking_id = UA-87977671-1
-dispatch_period = 10
-queue_save_period = 5
+dispatch_period = 300
+queue_save_period = 60
 verbose = 1
 
