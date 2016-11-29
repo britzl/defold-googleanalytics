@@ -46,14 +46,14 @@ Once you have added your tracking ID to game.project you're all set to start sen
 
 	function on_input(self, action_id, action)
 		if gui.pick_node(node1, action.x, action.y) and action.pressed then
-			go.get_default_tracker().event("category", "action")
+			ga.get_default_tracker().event("category", "action")
 		end
 
 		if gui.pick_node(node2, action.x, action.y) and action.pressed then
 			local time = socket.gettime()
 			http.request("http://d.defold.com/stable/info.json", "GET", function(self, id, response)
 				local millis = math.floor((socket.gettime() - time) * 1000)
-				go.get_default_tracker().timing("http", "get", millis)
+				ga.get_default_tracker().timing("http", "get", millis)
 			end)
 		end
 	end
