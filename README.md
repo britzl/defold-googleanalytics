@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/britzl/defold-googleanalytics.svg?branch=master)](https://travis-ci.org/britzl/defold-googleanalytics)
+
 # Google Analytics for Defold
 This is a Lua implementation of [Google Analytics](https://www.google.com/analytics) for the [Defold game engine](http://www.defold.com). The project is provided as a Defold library project for easy integration into Defold games. The implementation is loosely based on the design of the Google Analytics Android SDK, but with several simplifications thanks to the dynamic and flexible nature of Lua.
 
