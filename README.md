@@ -57,20 +57,28 @@ Once you have added your tracking ID to game.project you're all set to start sen
 			end)
 		end
 	end
-	
+
+Note that all tracking arguments of type string will be automatically URL encoded by the library.
+
 ## Supported hit types
 This implementation supports the following hit types:
 
-* Event - `ga.get_default_tracker().event()`
-* Screen View - `ga.default_tracker().screenview()`
-* Timing - `ga.default_tracker().timing()`
-* Exception - `ga.default_tracker().exception()`, also see section on automatic crash/exception tracking
+* Event - `ga.get_default_tracker().event(category, action, label, value)`
+* Screen View - `ga.default_tracker().screenview(screen_name)`
+* Timing - `ga.default_tracker().timing(category, variable, time, label)`
+* Exception - `ga.default_tracker().exception(description, is_fatal)`, also see section on automatic crash/exception tracking
 
 You can also register a raw hit where you specify all parameters yourself:
 
 	ga.get_default_tracker().raw("v=1&tid=UA-123456-1&cid=5555&t=pageview&dp=%2Fpage")
 
-### Automatic crash/exception tracking
+A set of base parameters such as screen dimensions, uuid, application name etc are provided in `base_params` on the tracker instance. These can be useful when creating the params for a raw hit:
+
+	print(ga.get_default_tracker().base_params)
+	
+	v=1&ds=app&cid=b80e6164-fc1f-4d76-cdae-dfb7e9a9507c&tid=UA-87977671-1&vp=1280x720&ul=en&an=Google_Analytics&aid=Google_AnalyticsDarwin&av=0.9
+
+## Automatic crash/exception tracking
 You can let Google Analytics automatically send tracking data when your app crashes. The library can handle soft crashes (ie when your Lua code crashes) using [sys.set_error_handler](http://www.defold.com/ref/sys/#sys.set_error_handler:error_handler) and hard crashes (ie when the Defold engine crashes) using [crash API](http://www.defold.com/ref/crash/). Enable automatic crash tracking like this:
 
 	local ga = require "googleanalytics.ga"
