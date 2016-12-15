@@ -64,9 +64,9 @@ Note that all tracking arguments of type string will be automatically URL encode
 This implementation supports the following hit types:
 
 * Event - `ga.get_default_tracker().event(category, action, label, value)`
-* Screen View - `ga.default_tracker().screenview(screen_name)`
-* Timing - `ga.default_tracker().timing(category, variable, time, label)`
-* Exception - `ga.default_tracker().exception(description, is_fatal)`, also see section on automatic crash/exception tracking
+* Screen View - `ga.get_default_tracker().screenview(screen_name)`
+* Timing - `ga.get_default_tracker().timing(category, variable, time, label)`
+* Exception - `ga.get_default_tracker().exception(description, is_fatal)`, also see section on automatic crash/exception tracking
 
 You can also register a raw hit where you specify all parameters yourself:
 
