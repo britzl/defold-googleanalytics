@@ -40,7 +40,8 @@ function M.save(name, data)
 	assert(name, "You must provide a file name")
 	assert(data, "You must provide some data")
 	assert(type(data) == "string", "You can only write strings")
-	local tmpname = os.tmpname()
+	local tmpname = M.get_save_file_name("___gatmp")
+	os.remove(tmpname)
 	local file, err = io.open(tmpname, "w+")
 	if not file then
 		return nil, err
