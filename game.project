@@ -28,3 +28,12 @@ dispatch_period = 300
 queue_save_period = 60
 verbose = 1
 
+[ios]
+bundle_identifier = com.britzl.defold.googleanalytics
+
+[android]
+package = com.britzl.defold.googleanalytics
+
+[osx]
+bundle_identifier = com.britzl.defold.googleanalytics
+
