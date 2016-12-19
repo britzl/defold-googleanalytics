@@ -34,7 +34,6 @@ return function()
 		it("should write to a temporary file and then move it if successful", function()
 			file.save("foobar", "some data")
 
-			assert(os.tmpname.calls == 1)
 			assert(os.rename.calls == 1)
 			assert(os.remove.calls == 1)
 		end)
