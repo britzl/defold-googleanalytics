@@ -3,6 +3,7 @@ local test_queue = require "tests.test_queue"
 local test_file = require "tests.test_file"
 local test_uuid = require "tests.test_uuid"
 local test_ga = require "tests.test_ga"
+local test_user_agent = require "tests.test_user_agent"
 
 local deftest = require "deftest.deftest"
 
@@ -12,5 +13,6 @@ function init(self)
 	deftest.add(test_file)
 	deftest.add(test_uuid)
 	deftest.add(test_ga)
+	deftest.add(test_user_agent)
 	deftest.run()
 end

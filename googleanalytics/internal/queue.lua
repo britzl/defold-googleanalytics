@@ -8,7 +8,7 @@
 
 local file = require "googleanalytics.internal.file"
 local json_encode = require "googleanalytics.internal.json_encode"
-
+local user_agent = require "googleanalytics.internal.user_agent"
 
 local M = {
 	last_dispatch_time = nil,
@@ -107,6 +107,7 @@ function M.dispatch()
 		
 		if #payload > 0 then
 			local post_data = table.concat(payload, "\n")
+			local headers = { ["User-Agent"] = user_agent.get() }
 			M.log("Sending %d hit(s) to Google Analytics", #hits_in_flight)
 			-- check limits of post_data (max 16K bytes, max 8K per payload)
 			http.request("https://www.google-analytics.com/batch", "POST", function(self, id, response)
@@ -116,7 +117,7 @@ function M.dispatch()
 						hits_to_retry[#hits_to_retry + 1] = hits_in_flight[i]
 					end
 				end
-			end, nil, post_data)
+			end, headers, post_data)
 		end
 	end
 
