@@ -52,11 +52,13 @@ return function()
 			mocked_values["device_model"] = nil
 			local uas = user_agent.get()
 			assert(uas and uas:match("Mozilla%/5%.0 %(Macintosh;.*") == uas)
+		end)
 
+		it("should provide no user agent string for HTML5", function()
 			mocked_values["system_name"] = "HTML5"
 			mocked_values["device_model"] = nil
 			local uas = user_agent.get()
-			assert(uas and uas:match("Mozilla%/5%.0 %(HTML5;.*") == uas)
+			assert(not uas)
 		end)
 
 		it("should be able to handle unknown system names", function()

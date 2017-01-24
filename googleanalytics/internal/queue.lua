@@ -109,7 +109,6 @@ function M.dispatch()
 			local post_data = table.concat(payload, "\n")
 			local headers = { ["User-Agent"] = user_agent.get() }
 			M.log("Sending %d hit(s) to Google Analytics", #hits_in_flight)
-			-- check limits of post_data (max 16K bytes, max 8K per payload)
 			http.request("https://www.google-analytics.com/batch", "POST", function(self, id, response)
 				if response.status < 200 or response.status >= 300 then
 					M.log("ERR: Problem when sending hits to Google Analytics. Code: ", response.status)

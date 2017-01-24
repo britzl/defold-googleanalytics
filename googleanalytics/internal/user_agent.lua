@@ -35,6 +35,9 @@ function M.get()
 		user_agent = ("Mozilla/5.0 (MSIE 10.0; Windows NT %s; Trident/5.0) Defold/%s"):format(system_version, engine_version)
 	elseif sys_info.system_name == "Linux" then
 		user_agent = ("Mozilla/5.0 (X11; Linux x86_64; Debian) AppleWebKit/537.36 (KHTML, like Gecko) Defold/%s"):format(engine_version)
+	elseif sys_info.system_name == "HTML5" then
+		-- modern browsers do not allow that the user agent is set manually
+		user_agent = nil
 	else
 		user_agent = ("Mozilla/5.0 (%s; %s; %s %s) Defold/%s"):format(system_name, system_version, device_model, manufacturer, engine_version)
 	end
