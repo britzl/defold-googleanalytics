@@ -61,7 +61,7 @@ function M.create(tracking_id)
 		.. "&ul=" .. sys.get_sys_info().device_language
 		.. "&an=" .. url_encode(get_application_name())
 		.. "&aid=" .. url_encode(get_application_id())
-		.. "&av=" .. sys.get_config("project.version"),
+		.. "&av=" .. (sys.get_config("project.version") or "1.0"),
 	}
 	
 	local event_params = tracker.base_params .. "&t=event"

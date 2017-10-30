@@ -88,7 +88,7 @@ You can let Google Analytics automatically send tracking data when your app cras
 	end
 
 ## License
-This library is released under the same [Terms and Conditions as the Defold editor and service itself](http://www.defold.com/about-terms/).
+This library is released under the same [Terms and Conditions as Defold](http://www.defold.com/about-terms/).
 
 ## Third party tools and modules used
 The library uses the following modules:
