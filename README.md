@@ -1,3 +1,5 @@
+![](logo.png)
+
 [![Build Status](https://travis-ci.org/britzl/defold-googleanalytics.svg?branch=master)](https://travis-ci.org/britzl/defold-googleanalytics)
 
 # Google Analytics for Defold
@@ -75,14 +77,14 @@ You can also register a raw hit where you specify all parameters yourself:
 A set of base parameters such as screen dimensions, uuid, application name etc are provided in `base_params` on the tracker instance. These can be useful when creating the params for a raw hit:
 
 	print(ga.get_default_tracker().base_params)
-	
+
 	v=1&ds=app&cid=b80e6164-fc1f-4d76-cdae-dfb7e9a9507c&tid=UA-87977671-1&vp=1280x720&ul=en&an=Google_Analytics&aid=Google_AnalyticsDarwin&av=0.9
 
 ## Automatic crash/exception tracking
 You can let Google Analytics automatically send tracking data when your app crashes. The library can handle soft crashes (ie when your Lua code crashes) using [sys.set_error_handler](http://www.defold.com/ref/sys/#sys.set_error_handler:error_handler) and hard crashes (ie when the Defold engine crashes) using [crash API](http://www.defold.com/ref/crash/). Enable automatic crash tracking like this:
 
 	local ga = require "googleanalytics.ga"
-	
+
 	function init(self)
 		ga.get_default_tracker().enable_crash_reporting(true)
 	end
