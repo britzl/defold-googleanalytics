@@ -1,4 +1,4 @@
-local mock = require "deftest.mock"
+local mock = require "deftest.mock.mock"
 local user_agent = require "googleanalytics.internal.user_agent"
 
 return function()

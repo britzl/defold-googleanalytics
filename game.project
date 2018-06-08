@@ -1,7 +1,7 @@
 [project]
 title = Google Analytics
 version = 0.9
-dependencies = https://github.com/andsve/dirtylarry/archive/master.zip, https://github.com/britzl/deftest/archive/master.zip
+dependencies = https://github.com/andsve/dirtylarry/archive/master.zip,https://github.com/britzl/deftest/archive/2.3.0.zip
 
 [bootstrap]
 main_collection = /tests/tests.collectionc
