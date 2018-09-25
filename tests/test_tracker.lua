@@ -20,6 +20,7 @@ return function()
 	describe("tracker", function()
 		before(function()
 			mock_fs.mock()
+			mock.mock(sys)
 			tracker = require "googleanalytics.tracker"
 			queue = require "googleanalytics.internal.queue"
 			
@@ -33,6 +34,7 @@ return function()
 		after(function()
 			mock_fs.unmock()
 			mock.unmock(queue)
+			mock.unmock(sys)
 			package.loaded["googleanalytics.tracker"] = nil
 			package.loaded["googleanalytics.internal.queue"] = nil
 		end)
@@ -140,18 +142,82 @@ return function()
 			assert(queue_params[2] == t.base_params .. "&t=timing&utc=category2&utv=variable2&utt=20&utl=label2")
 		end)
 		
-		it("should be able to enable automatic crash reporting", function()
+		it("should be able to enable automatic hard crash reporting", function()
 			if not crash then
 				return
 			end
 			local t = tracker.create("UA-87977671-1")
 			crash.write_dump()
 			t.enable_crash_reporting(true)
-			
+
+			assert(#queue_params == 1)
+			local params = split_params(queue_params[1])
+			assert(params.exf == "1") -- fatal
+			assert(params.exd)
+		end)
+
+		it("should be able to enable automatic soft crash reporting", function()
+			if not crash then
+				return
+			end
+			local soft_crash
+			sys.set_error_handler.replace(function(handler)
+				soft_crash = handler
+			end)
+
+			local t = tracker.create("UA-87977671-1")
+			t.enable_crash_reporting(true)
+			soft_crash("lua", "message", "traceback")
+
+			assert(#queue_params == 1)
+			local params = split_params(queue_params[1])
+			assert(params.exf == "0") -- non-fatal
+			assert(params.exd == "message")
+			assert(params.exd)
+		end)
+
+		it("should be able to forward hard crashes when automatic crash reporting is enabled", function()
+			if not crash then
+				return
+			end
+
+			local on_hard_crash_invoked = false
+			local function on_hard_crash() on_hard_crash_invoked = true end
+
+			local t = tracker.create("UA-87977671-1")
+			crash.write_dump()
+			t.enable_crash_reporting(true, nil, on_hard_crash)
+
 			assert(#queue_params == 1)
 			local params = split_params(queue_params[1])
 			assert(params.exf == "1")
 			assert(params.exd)
+			assert(on_hard_crash_invoked)
+		end)
+
+		it("should be able to forward soft crashes when automatic crash reporting is enabled", function()
+			if not crash then
+				return
+			end
+
+			local on_soft_crash_invoked = false
+			local function on_soft_crash() on_soft_crash_invoked = true end
+
+			local soft_crash
+			sys.set_error_handler.replace(function(handler)
+				soft_crash = handler
+			end)
+
+			local t = tracker.create("UA-87977671-1")
+			t.enable_crash_reporting(true, on_soft_crash, nil)
+			soft_crash("lua", "message", "traceback")
+
+			assert(#queue_params == 1)
+			local params = split_params(queue_params[1])
+			assert(params.exf == "0") -- non-fatal
+			assert(params.exd == "message")
+			assert(params.exd)
+			assert(on_soft_crash_invoked)
 		end)
 	end)
 end

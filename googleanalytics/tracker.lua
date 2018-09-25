@@ -75,15 +75,23 @@ function M.create(tracking_id)
 	-- It will also, when called, load any previous hard crash using
 	-- crash.load_previous() and track that as a fatal crash.
 	-- @param enabled Set to true to enable automatic crash reporting
-	function tracker.enable_crash_reporting(enabled)
+	-- @param on_soft_crash Optional callback to invoke when a soft crash is detected
+	-- @param on_hard_crash Optional callback to invoke when a hard crash is detected
+	function tracker.enable_crash_reporting(enabled, on_soft_crash, on_hard_crash)
 		if enabled then
 			sys.set_error_handler(function(source, message, traceback)
 				tracker.exception(message, false)
+				if on_soft_crash then
+					on_soft_crash(source, message, traceback)
+				end
 			end)
 			local handle = crash.load_previous()
 			if handle then
 				tracker.exception(crash.get_extra_data(handle), true)
 				crash.release(handle)
+				if on_hard_crash then
+					on_hard_crash(handle)
+				end
 			end
 		else
 			sys.set_error_handler(function() end)
