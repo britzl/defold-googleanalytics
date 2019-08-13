@@ -10,7 +10,7 @@ addons:
     - g++-5
 language: java
 jdk:
-- oraclejdk8
+- oraclejdk11
 env:
   global:
   - DEFOLD_AUTH=foobar
