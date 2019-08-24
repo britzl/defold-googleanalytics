@@ -88,10 +88,10 @@ function M.create(tracking_id)
 			local handle = crash.load_previous()
 			if handle then
 				tracker.exception(crash.get_extra_data(handle), true)
-				crash.release(handle)
 				if on_hard_crash then
 					on_hard_crash(handle)
 				end
+				crash.release(handle)
 			end
 		else
 			sys.set_error_handler(function() end)
