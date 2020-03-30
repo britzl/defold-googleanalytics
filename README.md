@@ -89,6 +89,11 @@ You can let Google Analytics automatically send tracking data when your app cras
 		ga.get_default_tracker().enable_crash_reporting(true)
 	end
 
+In order to see crashes in Google Analytics you need to [create a new Dashboard with a Table Widget](https://support.google.com/analytics/answer/1068218?hl=en) showing the `Exception Description` column and the `Exception` metric:
+
+![](analytics_exception_setup.png)
+
+
 ## License
 This library is released under the same [Terms and Conditions as Defold](http://www.defold.com/about-terms/).
 
