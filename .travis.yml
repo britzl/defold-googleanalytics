@@ -1,18 +1,16 @@
-sudo: required
-script:
-- "./.test/run.sh"
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - gcc-5
-    - g++-5
 language: java
+
+dist: bionic
+
 jdk:
-- oraclejdk11
+  - oraclejdk11
+
 env:
   global:
-  - DEFOLD_AUTH=foobar
-  - DEFOLD_USER=bjorn.ritzl@gmail.com
-  - DEFOLD_BOOSTRAP_COLLECTION=/test/test.collectionc
+    - DEFOLD_AUTH=foobar
+    - DEFOLD_USER=bjorn.ritzl@gmail.com
+    - DEFOLD_BOOSTRAP_COLLECTION=/test/test.collectionc
+
+
+script:
+  - "./.test/run.sh"
