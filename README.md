@@ -15,7 +15,7 @@ You can use Google Analytics in your own project by adding this project as a [De
 Or point to the ZIP file of a [specific release](https://github.com/britzl/defold-googleanalytics/releases).
 
 ## Configuration
-Before you can use Google Analytics in your project you need to add your analytics tracking ID to game.project. Open game.project as a text file and create a new section:
+Before you can use Google Analytics in your project you need to add your analytics tracking ID to game.project (`*`). Open game.project as a text file and create a new section:
 
 	[googleanalytics]
 	tracking_id = UA-1234567-1
@@ -33,6 +33,7 @@ Additional optional values are:
 
 `verbose` set to 1 will print some additional data about when and how many hits are sent to Google Analytics. Set to 0 or omit the value to not print anything.
 
+`*` = Google has changed the way you set up analytics and now make a clear distinction between mobile apps and websites. Mobile apps should use [Firebase Analytics](https://www.github.com/defold/extension-firebase-analytics) and websites should use Google Analytics. This is actually not strictly necessary and it is possible to use Google Analytics for a mobile apps and games. To get a tracking id you need to create a web property.
 ## Usage
 Once you have added your tracking ID to game.project you're all set to start sending tracking data:
 
