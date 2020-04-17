@@ -34,6 +34,12 @@ Additional optional values are:
 `verbose` set to 1 will print some additional data about when and how many hits are sent to Google Analytics. Set to 0 or omit the value to not print anything.
 
 `*` = Google has changed the way you set up analytics and now make a clear distinction between mobile apps and websites. Mobile apps should use [Firebase Analytics](https://www.github.com/defold/extension-firebase-analytics) and websites should use Google Analytics. This is actually not strictly necessary and it is possible to use Google Analytics for a mobile apps and games. To get a tracking id you need to create a web property.
+
+## Data processing latency
+Keep in mind that there is a data processing latency of one or two days which means that you will not be able to see the data you generate in your application straight away. You should be able to see data in the realtime view with only a very slight delay though. 
+
+More information: https://support.google.com/analytics/answer/1070983?hl=en
+
 ## Usage
 Once you have added your tracking ID to game.project you're all set to start sending tracking data:
 
