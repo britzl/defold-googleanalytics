@@ -100,10 +100,6 @@ In order to see crashes in Google Analytics you need to [create a new Dashboard 
 
 ![](analytics_exception_setup.png)
 
-
-## License
-This library is released under the same [Terms and Conditions as Defold](http://www.defold.com/about-terms/).
-
 ## Third party tools and modules used
 The library uses the following modules:
 
