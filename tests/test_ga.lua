@@ -25,14 +25,24 @@ return function()
 			mock.mock(queue)
 			mock.mock(tracker)
 			--queue.dispatch.replace(function() end)
-			sys.get_config.replace(function(key, default)
+			sys.get_config_string.replace(function(key, default)
 				local value = mocked_sys_config_values[key]
 				if value and type(value) == "string" then
 					return value
 				elseif value ~= nil and type(value) ~= "string" then
 					return default
 				else
-					return sys.get_config.original(key, default)
+					return sys.get_config_string.original(key, default)
+				end
+			end)
+			sys.get_config_number.replace(function(key, default)
+				local value = mocked_sys_config_values[key]
+				if value and (type(value) == "number" or type(value) == "string") then
+					return tonumber(value)
+				elseif value ~= nil and type(value) ~= "string" then
+					return default
+				else
+					return sys.get_config_number.original(key, default)
 				end
 			end)
 		end)

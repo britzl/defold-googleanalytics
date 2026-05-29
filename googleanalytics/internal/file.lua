@@ -5,7 +5,7 @@ local M = {}
 -- @param name Name of file to get full path for
 -- @return The full path to the specified file
 function M.get_save_file_name(name)
-	local application_name = sys.get_config("project.title"):gsub(" ", "_")
+	local application_name = sys.get_config_string("project.title"):gsub(" ", "_")
 	return sys.get_save_file(application_name, name)
 end
 

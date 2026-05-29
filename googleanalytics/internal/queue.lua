@@ -13,7 +13,7 @@ local user_agent = require "googleanalytics.internal.user_agent"
 local M = {
 	last_dispatch_time = nil,
 	last_save_time = nil,
-	minimum_save_period = tonumber(sys.get_config("googleanalytics.queue_save_period", 5 * 60)),
+	minimum_save_period = sys.get_config_number("googleanalytics.queue_save_period", 5 * 60),
 }
 
 
@@ -46,7 +46,7 @@ function M.log(...)
 	-- no-op
 end
 
-if sys.get_config("googleanalytics.verbose") == "1" then
+if sys.get_config_string("googleanalytics.verbose") == "1" then
 	M.log = function(s, ...)
 		if select("#", ...) > 0 then
 			print(s:format(...))

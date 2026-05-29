@@ -34,14 +34,14 @@ local function get_uuid()
 end
 
 local function get_application_name()
-	return sys.get_config("project.title"):gsub(" ", "_")
+	return sys.get_config_string("project.title"):gsub(" ", "_")
 end
 
 local function get_application_id()
 	local APPLICATION_IDS = {
-		["Android"] = sys.get_config("android.package"),
-		["iPhone OS"] = sys.get_config("ios.bundle_identifier"),
-		["Darwin"] = sys.get_config("osx.bundle_identifier"),
+		["Android"] = sys.get_config_string("android.package"),
+		["iPhone OS"] = sys.get_config_string("ios.bundle_identifier"),
+		["Darwin"] = sys.get_config_string("osx.bundle_identifier"),
 	}
 	local system_name = sys.get_sys_info().system_name
 	return APPLICATION_IDS[system_name] or (get_application_name() .. system_name)
@@ -57,11 +57,11 @@ function M.create(tracking_id)
 		base_params = "v=1&ds=app"
 		.. "&cid=" .. get_uuid()
 		.. "&tid=" .. tracking_id
-		.. "&vp=" .. sys.get_config("display.width") .. "x" .. sys.get_config("display.height")
+		.. "&vp=" .. sys.get_config_int("display.width") .. "x" .. sys.get_config_int("display.height")
 		.. "&ul=" .. sys.get_sys_info().device_language
 		.. "&an=" .. url_encode(get_application_name())
 		.. "&aid=" .. url_encode(get_application_id())
-		.. "&av=" .. (sys.get_config("project.version") or "1.0"),
+		.. "&av=" .. (sys.get_config_string("project.version") or "1.0"),
 	}
 	
 	local event_params = tracker.base_params .. "&t=event"

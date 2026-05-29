@@ -23,7 +23,7 @@ local tracker = require "googleanalytics.tracker"
 local queue = require "googleanalytics.internal.queue"
 
 local M = {
-	dispatch_period = tonumber(sys.get_config("googleanalytics.dispatch_period", 30 * 60)),
+	dispatch_period = sys.get_config_number("googleanalytics.dispatch_period", 30 * 60),
 }
 
 local default_tracker = nil
@@ -32,7 +32,7 @@ local default_tracker = nil
 -- @return Tracker instance
 function M.get_default_tracker()
 	if not default_tracker then
-		local tracking_id = sys.get_config("googleanalytics.tracking_id")
+		local tracking_id = sys.get_config_string("googleanalytics.tracking_id")
 		assert(tracking_id, "You must set tracking_id in section [googleanalytics] in game.project before using this module")
 		default_tracker = tracker.create(tracking_id)
 	end
